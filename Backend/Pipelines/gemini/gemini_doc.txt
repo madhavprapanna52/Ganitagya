@@ -1,0 +1,1 @@
+Making gemini connection and response logic
