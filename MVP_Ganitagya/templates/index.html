@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ganitagya - Interactive Math Learning</title>
+  
+  <!-- CSS File -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+  <!-- Preload important resources -->
+  <link rel="preload" href="{{ url_for('static', filename='js/script.js') }}" as="script">
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <h1>🔢 Ganitagya</h1>
+    <p>Interactive Mathematical Learning with AI-Generated Videos</p>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Video Section -->
+    <div class="video-section">
+      <h2>📽️ Video Explanation</h2>
+      <div class="video-container">
+        <video id="video-player" class="video-player" controls preload="metadata">
+          <source src="{{ url_for('static', filename='MathVideoScene.mp4') }}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay">
+          <div class="video-placeholder">
+            <div class="loading-spinner" id="video-loading"></div>
+            <h3>Math Visualization Ready</h3>
+            <p>Ask a math question to generate an interactive video explanation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Section -->
+    <div class="chat-section">
+      <h2>🤖 AI Math Assistant</h2>
+      <div class="chat-window" id="chat-window">
+        <!-- Messages will be added dynamically -->
+      </div>
+
+      <!-- Chat Form -->
+      <form class="chat-form" id="chat-form">
+        <input 
+          type="text" 
+          id="chat-input" 
+          class="chat-input" 
+          placeholder="गणित के बारे में कुछ भी पूछें..." 
+          autocomplete="off"
+          maxlength="500"
+        >
+        <button type="submit" class="send-button" id="send-button">
+          भेजें
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript File -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+
