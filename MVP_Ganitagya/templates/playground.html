@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Playground - Gantavya{% endblock %}
+
+{% block body %}
+<!-- Feather Icons for lightweight icons -->
+<script src="https://unpkg.com/feather-icons"></script>
+
+<div class="playground-grid">
+    <!-- Video Section -->
+    <div class="playground-card video-section">
+        <h2>
+            <i data-feather="film"></i>
+            Video Explanation
+        </h2>
+        <div class="video-container">
+            <video id="video-player" class="video-player" controls preload="metadata"></video>
+            <div class="video-overlay">
+                <div class="video-placeholder">
+                    <div class="loading-spinner" id="video-loading"></div>
+                    <h3>Your Visual Solution Appears Here</h3>
+                    <p>Ask a math question to our AI assistant, and a custom video explanation will be generated for you.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Section -->
+    <div class="playground-card chat-section">
+        <h2>
+            <i data-feather="message-circle"></i>
+           Your AI Math Assistant: Ganitagya
+        </h2>
+        <div class="chat-window" id="chat-window">
+            <div class="message llm">
+                Hello! I'm your AI math tutor Ganitagya. Ask me any mathematical question, and I'll create a visual explanation for you. For example: "What is the Pythagorean theorem?"
+            </div>
+        </div>
+        <form class="chat-form" id="chat-form">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Ask a math question..." autocomplete="off"/>
+            <button type="submit" class="send-button" id="send-button">
+                <i data-feather="arrow-up"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Activate Feather Icons
+    feather.replace();
+
+    // Playground Logic
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const sendButton = document.getElementById('send-button');
+    const chatWindow = document.getElementById('chat-window');
+    const videoPlayer = document.getElementById('video-player');
+    const videoLoading = document.getElementById('video-loading');
+
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const question = chatInput.value.trim();
+        if (!question) return;
+
+        addMessage(question, 'user');
+        chatInput.value = '';
+        sendButton.disabled = true;
+        videoLoading.style.display = 'block';
+
+        // Remove src from video player to show overlay
+        videoPlayer.removeAttribute('src');
+
+        try {
+            // This is where you call your Flask backend API
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: question })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            addMessage(data.response || 'I have generated a video for you.', 'llm');
+            
+            if (data.video_url) {
+                videoPlayer.src = data.video_url;
+                videoPlayer.load();
+                videoPlayer.oncanplaythrough = () => {
+                    videoLoading.style.display = 'none';
+                    videoPlayer.play();
+                };
+                videoPlayer.onerror = () => {
+                    videoLoading.style.display = 'none';
+                    addMessage('Sorry, there was an error loading the video.', 'llm');
+                };
+            } else {
+                 videoLoading.style.display = 'none';
+            }
+
+        } catch (error) {
+            console.error('Error fetching from API:', error);
+            addMessage('Sorry, I couldn\'t connect to the backend. Please try again later.', 'llm');
+            videoLoading.style.display = 'none';
+        } finally {
+            sendButton.disabled = false;
+        }
+    });
+
+    function addMessage(text, type) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${type}`;
+        msgDiv.textContent = text;
+        chatWindow.appendChild(msgDiv);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+</script>
+{% endblock %}

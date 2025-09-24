@@ -10,10 +10,19 @@ CORS(app)
 genai.configure(api_key="AIzaSyBGd0VOcTyR6Dzx6Fi5T9ZVGBHzmXgXOks") # Api connection
 
 # Routes
-@app.route('/')
+@app.route('/index')
 def index():
-    """Main page"""
     return render_template('index.html')
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+# Routes
+@app.route('/playground')
+def playground():
+    return render_template('playground.html')
+
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -24,7 +33,8 @@ def chat():
         
         # Generate response using Gemini
         model = genai.GenerativeModel('gemini-1.5-flash')
-        prompt = f"गणित की इस समस्या को हिंदी में समझाएं: {message}"
+        # prompt = f"गणित की इस समस्या को हिंदी में समझाएं: {message}"
+        prompt = f"Explain this mathematical problem in very easyway with example: {message}"
         response = model.generate_content(prompt)
         
         return jsonify({
@@ -44,6 +54,14 @@ def chat():
 def serve_generated_video(filename):
     """Serve generated videos"""
     return send_from_directory('manimation_engine/generated_videos', filename)
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
