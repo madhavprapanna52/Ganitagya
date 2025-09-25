@@ -1,5 +1,9 @@
 .venv
+<<<<<<< HEAD
 .log
 *.pyc
 __pycache__/
 
+=======
+*.mp4
+>>>>>>> c3453e5 (Made base README file)
