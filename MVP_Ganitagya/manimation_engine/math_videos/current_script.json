@@ -1,6 +1,0 @@
-{
-  "title": "Quadratic Function Analysis",
-  "text_definition": "A quadratic function is a polynomial function of degree 2. It has the general form f(x) = ax^2 + bx + c where a != 0. The graph of a quadratic function is a parabola that opens upward if a > 0 and downward if a < 0.",
-  "equation": "x**2 + 2*x + 1",
-  "variable": "x"
-}
