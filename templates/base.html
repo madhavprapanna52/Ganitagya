@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Gantavya{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}" />
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <header class="header">
+        <div class="nav-logo"><a href="{{ url_for('home') }}">Gantavya</a></div>
+        <nav>
+            <ul class="navbar">
+                <li><a href="{{ url_for('home')}}">Home</a></li>
+                <li><a href="{{ url_for('playground') }}">Playground</a></li>
+
+                <!-- Conditional links based on session -->
+                {% if session.get('user_id') %}
+                <li><a href="{{ url_for('logout') }}" class="">Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block body %}
+        <!-- Page specific content goes here -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        {% block footer %}
+        <!-- Footer content can go here -->
+        {% endblock %}
+    </footer>
+</body>
+
+</html>

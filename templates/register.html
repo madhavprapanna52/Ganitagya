@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Gantavya{% endblock %}
+
+{% block body %}
+<!-- Feather Icons for lightweight icons -->
+<script src="https://unpkg.com/feather-icons"></script>
+
+<div class="login-container">
+    <div class="login-card">
+        <h3>Create Your Account</h3>
+        <p class="subtitle">Join Gantavya to start your mathematical journey.</p>
+
+        <!-- Flash messages can be added here if your register route flashes them -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form class="login-form" action="{{ url_for('register') }}" method="POST" novalidate>
+            <div class="input-group">
+                <input class="form-input" type="text" name="name" placeholder="Full Name" required minlength="2" maxlength="50">
+                <i class="input-icon" data-feather="user"></i>
+            </div>
+
+            <div class="input-group">
+                <input class="form-input" type="email" name="email" placeholder="Email Address" required>
+                <i class="input-icon" data-feather="mail"></i>
+            </div>
+            
+            <div class="input-group">
+                <input class="form-input" type="date" name="dob" placeholder="Date of Birth" onfocus="(this.type='date')" onblur="(this.type='text')">
+                <i class="input-icon" data-feather="calendar"></i>
+            </div>
+
+            <div class="input-group">
+                <input class="form-input" type="password" name="password" placeholder="Password" required minlength="2" maxlength="20">
+                <i class="input-icon" data-feather="lock"></i>
+            </div>
+            
+            <button type="submit" class="submit-btn">Create Account</button>
+        </form>
+
+        <p class="redirect-link">
+            Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    // Activate Feather Icons
+    feather.replace();
+</script>
+{% endblock %}
